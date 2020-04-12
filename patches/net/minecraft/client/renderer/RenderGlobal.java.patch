@@ -276,7 +276,20 @@
                  if (!flag2)
                  {
                      double d3 = RenderChunkUtils.getRelativeBufferSize(renderchunk2);
-@@ -2873,9 +2905,9 @@
+@@ -2711,7 +2743,11 @@
+                 double d3 = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double)partialTicks;
+                 double d4 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double)partialTicks;
+                 double d5 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double)partialTicks;
+-                drawSelectionBoundingBox(iblockstate.getSelectedBoundingBox(this.world, blockpos).grow(0.0020000000949949026D).offset(-d3, -d4, -d5), 0.0F, 0.0F, 0.0F, 0.4F);
++                mc.entityRenderer.restoreRVEPos((EntityLivingBase) this.mc.getRenderViewEntity()); //unhack the RVE position.
++                AxisAlignedBB bb = iblockstate.getSelectedBoundingBox(this.world, blockpos);
++                mc.entityRenderer.cacheRVEPos((EntityLivingBase) this.mc.getRenderViewEntity());
++                mc.entityRenderer.setupRVE();
++                drawSelectionBoundingBox(bb.grow(0.0020000000949949026D).offset(-d3, -d4, -d5), 0.0F, 0.0F, 0.0F, 0.4F);
+             }
+ 
+             GlStateManager.depthMask(true);
+@@ -2873,9 +2909,9 @@
      {
      }
  
@@ -288,7 +301,7 @@
      }
  
      public void spawnParticle(int id, boolean ignoreRange, boolean p_190570_3_, final double x, final double y, final double z, double xSpeed, double ySpeed, double zSpeed, int... parameters)
-@@ -3163,6 +3195,8 @@
+@@ -3163,6 +3199,8 @@
      public void playEvent(EntityPlayer player, int type, BlockPos blockPosIn, int data)
      {
          Random random = this.world.rand;
@@ -297,7 +310,7 @@
  
          switch (type)
          {
-@@ -3219,18 +3253,30 @@
+@@ -3219,18 +3257,30 @@
                  break;
  
              case 1011:
@@ -328,7 +341,7 @@
                  this.world.playSound(blockPosIn, SoundEvents.BLOCK_FENCE_GATE_CLOSE, SoundCategory.BLOCKS, 1.0F, this.world.rand.nextFloat() * 0.1F + 0.9F, false);
                  break;
  
-@@ -3251,14 +3297,26 @@
+@@ -3251,14 +3301,26 @@
                  break;
  
              case 1019:
@@ -355,7 +368,7 @@
                  this.world.playSound(blockPosIn, SoundEvents.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, SoundCategory.HOSTILE, 2.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
                  break;
  
-@@ -3287,10 +3345,17 @@
+@@ -3287,10 +3349,17 @@
                  break;
  
              case 1030:
@@ -373,7 +386,7 @@
                  this.world.playSound(blockPosIn, SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.3F, this.world.rand.nextFloat() * 0.1F + 0.9F, false);
                  break;
  
-@@ -3311,6 +3376,9 @@
+@@ -3311,6 +3380,9 @@
                  break;
  
              case 1036:
@@ -383,7 +396,7 @@
                  this.world.playSound(blockPosIn, SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundCategory.BLOCKS, 1.0F, this.world.rand.nextFloat() * 0.1F + 0.9F, false);
                  break;
  
-@@ -3350,6 +3418,9 @@
+@@ -3350,6 +3422,9 @@
                      {
                          soundtype = (SoundType)Reflector.call(block, Reflector.ForgeBlock_getSoundType, Block.getStateById(data), this.world, blockPosIn, null);
                      }
